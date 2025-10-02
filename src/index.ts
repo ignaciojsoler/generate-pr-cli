@@ -189,8 +189,8 @@ async function main() {
     }
 
     // Ask for optional ticket
-    console.log(chalk.yellow('\n🎫 Enter Jira/VSTS ticket (optional):'));
-    console.log(chalk.gray('Examples: MIES2-1234, CNP-123, PROJ-456\n'));
+    console.log(chalk.yellow('\n🎫 Enter Jira/VSTS ticket number and title (optional):'));
+    console.log(chalk.gray('Examples: [TKT-1234] My new feature\n'));
     
     const ticket = await input({
       message: 'Ticket number (leave empty to skip):',
