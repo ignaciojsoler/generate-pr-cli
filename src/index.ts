@@ -63,10 +63,8 @@ function showHelp() {
   console.log(chalk.red('   • Changes between current and target branch\n'));
 
   console.log(chalk.bold('🔗 Links:'));
-  console.log(chalk.yellow('   • GitHub: [your-repo-url]'));
-  console.log(chalk.yellow('   • Report issues: [your-repo-url]/issues\n'));
-
-  console.log(chalk.gray('Made with ❤️ for developers who love automation'));
+  console.log(chalk.yellow('   • GitHub: https://github.com/ignaciojsoler/generate-pr-cli'));
+  console.log(chalk.yellow('   • Report issues: https://github.com/ignaciojsoler/generate-pr-cli/issues\n'));
   process.exit(0);
 }
 
