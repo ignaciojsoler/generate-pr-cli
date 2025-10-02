@@ -46,12 +46,16 @@ export async function generatePRDescription(request: PRGenerationRequest): Promi
   
   // Debug disabled for production
 
-  const systemPrompt = `Usa EXACTAMENTE esta estructura y completa cada línea:
+  const systemPrompt = `Genera un PR siguiendo EXACTAMENTE esta estructura:
 
 ${processedTemplate}
 
-- Mantén los headers en negrita exactamente como están
-- Completa cada línea con información específica del git diff`;
+INSTRUCCIONES:
+1. Copia los headers en negrita exactamente como están
+2. Completa cada sección según el git diff proporcionado
+3. Usa viñetas (- ) para listar los puntos en cada sección
+4. Si no hay información para alguna sección, omítela completamente
+5. Sé específico y detallado basándote en los archivos modificados`;
 
   const userPrompt = `GIT DIFF:
 
