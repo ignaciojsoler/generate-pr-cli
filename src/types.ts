@@ -10,6 +10,7 @@ export type TemplateType = 'frontend' | 'backend' | 'custom';
 export interface PRTemplate {
   name: string;
   structure: string;
+  language?: 'es' | 'en';
 }
 
 export interface PRGenerationRequest {

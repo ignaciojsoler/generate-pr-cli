@@ -5,15 +5,16 @@ A powerful CLI tool that automatically generates Pull Request descriptions based
 ## ✨ Features
 
 - 🔍 **Automatic Git diff detection** - Analyzes changes between branches
+- 🌍 **Multilingual Support** - Full English and Spanish (Español) interface
 - 🎨 **Multiple PR Templates** - Frontend, Backend, Custom templates + User templates
 - ✨ **Custom Templates** - Create and save your own PR templates
-- 🤖 **AI-powered descriptions** - Uses Google Gemini to generate professional PR descriptions in Spanish
+- 🤖 **AI-powered descriptions** - Uses Google Gemini to generate professional PR descriptions
 - ✏️ **Interactive adjustments** - Iteratively refine the PR with AI assistance
 - 📋 **Copy to clipboard** - One-click copy to clipboard
 - 💾 **Save to file** - Export PR description as text file
 - 🔧 **Template Management** - Add, edit, and manage custom templates
 - 🎫 **Jira/VSTS Integration** - Optional ticket number inclusion in PR descriptions
-- 💾 **Persistent API Key Storage** - Save API key locally for convenience
+- 💾 **Persistent Storage** - Save API key and language preferences locally
 - 🎯 **Clean & modular** - Well-structured, maintainable codebase
 
 ## 📦 Installation
@@ -71,6 +72,39 @@ GEMINI_API_KEY=your_gemini_api_key_here
 **Option 3: First Run**
 If no API key is saved, the CLI will prompt you for it on first use.
 
+## 🌍 Language Settings / Configuración de Idioma
+
+The CLI supports both **English** and **Spanish** (Español). You can change the language at any time:
+
+### Supported Languages / Idiomas Soportados
+
+| Language | Code | Description |
+|----------|------|-------------|
+| 🇺🇸 English | `en` | Full English interface and templates |
+| 🇪🇸 Español | `es` | Interfaz y plantillas en español |
+
+### Change Language / Cambiar Idioma
+
+```bash
+# Interactive language selection
+generate-pr --language
+generate-pr --lang        # Short alias
+
+# For local development
+node dist/index.js --language
+node dist/index.js --lang
+```
+
+### Language Features / Características por Idioma
+
+- **✅ Interface**: All menu options, prompts, and messages
+- **✅ Templates**: Frontend, Backend, and Custom templates
+- **✅ Help**: Complete documentation in selected language
+- **✅ Error Messages**: Localized error reporting
+- **✅ Validation**: API key and template validation messages
+
+The language setting is saved automatically and persists across sessions.
+
 ## 🚀 Usage
 
 ### Basic Usage
@@ -94,6 +128,10 @@ node dist/index.js -h
 # API key management
 node dist/index.js --set-api-key    # Set or update your Gemini API key
 node dist/index.js --clear-api-key  # Remove saved API key
+
+# Language settings
+node dist/index.js --language       # Change language / Cambiar idioma
+node dist/index.js --lang          # Short alias for language command
 ```
 
 ### Global Usage (if installed globally)
@@ -113,6 +151,10 @@ generate-pr  # Shows help when no arguments provided
 # API key management
 generate-pr --set-api-key    # Set or update your Gemini API key
 generate-pr --clear-api-key  # Remove saved API key
+
+# Language settings
+generate-pr --language       # Change language / Cambiar idioma
+generate-pr --lang          # Short alias for language command
 ```
 
 ## 📖 How It Works
@@ -257,5 +299,5 @@ Built with:
 
 ---
 
-Made with ❤️ for developers who love automation
+Made with ❤️ for lazy developers
 

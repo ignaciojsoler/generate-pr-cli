@@ -8,7 +8,8 @@ import { config } from 'dotenv';
 import { getCurrentBranch, getGitDiff } from './git.js';
 import { getAllTemplateTypes, getTemplate, addUserTemplate } from './templates.js';
 import { initializeAI, generatePRDescription, adjustPRDescription } from './ai.js';
-import { loadApiKey, saveApiKey, clearApiKey } from './config.js';
+import { loadApiKey, saveApiKey, clearApiKey, setLanguage, getLanguage } from './config.js';
+import { SUPPORTED_LANGUAGES, getTranslation, type Language } from './languages.js';
 
 config();
 
@@ -35,33 +36,55 @@ async function setApiKey() {
 }
 
 async function clearApiKeyCmd() {
+  const currentLanguage = getLanguage() as Language;
+  
   console.clear();
-  console.log(chalk.bold.cyan('\n🗑️  Clear Gemini API Key\n'));
+  console.log(chalk.bold.cyan(`\n${getTranslation('clearApiKey', currentLanguage)}\n`));
   
   const currentKey = loadApiKey();
   
   if (!currentKey) {
-    console.log(chalk.yellow('ℹ️  No API key found to clear.\n'));
+    console.log(chalk.yellow(`${(getTranslation('noApiKeyToClear', currentLanguage))}\n`));
     process.exit(0);
   }
   
   const confirmed = await input({
-    message: 'Are you sure you want to clear your saved API key? (y/N):',
-    default: 'N'
+    message: getTranslation('confirmClearApiKey', currentLanguage),
+    default: getTranslation('defaultNo', currentLanguage)
   });
   
-  if (confirmed.toLowerCase() === 'y' || confirmed.toLowerCase() === 'yes') {
+  if (confirmed.toLowerCase() === 'y' || confirmed.toLowerCase() === 'yes' || confirmed.toLowerCase() === 's' || confirmed.toLowerCase() === 'si') {
     clearApiKey();
-    console.log(chalk.green('\n✅ API key cleared successfully!\n'));
-    console.log(chalk.gray('You can set a new API key with: generate-pr --set-api-key\n'));
+    console.log(chalk.green(`\n${getTranslation('apiKeyCleared', currentLanguage)}\n`));
+    console.log(chalk.gray(`${getTranslation('setup', currentLanguage)}: generate-pr --set-api-key\n`));
   } else {
-    console.log(chalk.gray('\nOperation cancelled.\n'));
+    console.log(chalk.gray(`\n${getTranslation('operationCancelled', currentLanguage)}\n`));
   }
 }
 
-function showHelp() {
+async function changeLanguage() {
   console.clear();
-  console.log(chalk.bold.cyan('\n🚀 Generate PR CLI - Help\n'));
+  console.log(chalk.bold.cyan('\n🌍 Select Language / Seleccionar Idioma\n'));
+  
+  const language = await select({
+    message: 'Choose your preferred language / Elige tu idioma preferido:',
+    choices: SUPPORTED_LANGUAGES.map(lang => ({
+      name: `${lang.flag} ${lang.name}`,
+      value: lang.code
+    }))
+  }) as Language;
+  
+  setLanguage(language);
+  
+  const translation = getTranslation('success', language);
+  console.log(chalk.green(`\n${translation} Language set to ${SUPPORTED_LANGUAGES.find(l => l.code === language)?.name}\n`));
+}
+
+function showHelp() {
+  const currentLanguage = getLanguage() as Language;
+  
+  console.clear();
+  console.log(chalk.bold.cyan(`\n${getTranslation('cliHelp', currentLanguage)}\n`));
   
   console.log(chalk.bold('📖 Description:'));
   console.log(chalk.gray('   Automatically generates Pull Request descriptions based on Git diffs using AI'));
@@ -74,7 +97,8 @@ function showHelp() {
 
   console.log(chalk.bold('⚙️  API Key Management:'));
   console.log(chalk.magenta('   generate-pr --set-api-key     # Set or update API key'));
-  console.log(chalk.magenta('   generate-pr --clear-api-key   # Remove saved API key\n'));
+  console.log(chalk.magenta('   generate-pr --clear-api-key   # Remove saved API key'));
+  console.log(chalk.magenta('   generate-pr --language        # Change language / Cambiar idioma\n'));
 
   console.log(chalk.bold('📋 Examples:'));
   console.log(chalk.yellow('   npx generate-pr develop'));
@@ -104,7 +128,7 @@ function showHelp() {
 
   console.log(chalk.bold('💡 Tips:'));
   console.log(chalk.green('   • Ensure you\'re in a Git repository'));
-  console.log(chalk.green('   • Make sure your changes are committed for accurate diffs'));
+  console.log(chalk.green('   • Change language anytime with: generate-pr --language'));
   console.log(chalk.green('   • Use descriptive ticket numbers (e.g., FE-123, BE-456)'));
   console.log(chalk.green('   • You can request AI adjustments after initial generation\n'));
 
@@ -116,6 +140,9 @@ function showHelp() {
   console.log(chalk.bold('🔗 Links:'));
   console.log(chalk.yellow('   • GitHub: https://github.com/ignaciojsoler/generate-pr-cli'));
   console.log(chalk.yellow('   • Report issues: https://github.com/ignaciojsoler/generate-pr-cli/issues\n'));
+  
+  console.log(chalk.gray('Made with ❤️ for lazy developers'));
+  console.log(chalk.bold('Supported languages: English (en) | Español (es)'));
   process.exit(0);
 }
 
@@ -138,6 +165,11 @@ async function main() {
     
     if (args.includes('--clear-api-key')) {
       await clearApiKeyCmd();
+      return;
+    }
+    
+    if (args.includes('--language') || args.includes('--lang')) {
+      await changeLanguage();
       return;
     }
     

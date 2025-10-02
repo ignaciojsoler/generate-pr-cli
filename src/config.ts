@@ -7,6 +7,7 @@ const CONFIG_FILE = join(CONFIG_DIR, 'config.json');
 
 interface Config {
   apiKey?: string;
+  language?: string;
 }
 
 export function ensureConfigDir(): void {
@@ -50,3 +51,35 @@ export function clearApiKey(): void {
     }
   }
 }
+
+function loadConfig(): Config {
+  if (!existsSync(CONFIG_FILE)) {
+    return {};
+  }
+  
+  try {
+    const data = readFileSync(CONFIG_FILE, 'utf-8');
+    return JSON.parse(data);
+  } catch (error) {
+    return {};
+  }
+}
+
+export function setLanguage(language: string): void {
+  ensureConfigDir();
+  
+  const config = loadConfig();
+  config.language = language;
+  
+  try {
+    writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2), 'utf-8');
+  } catch (error) {
+    throw new Error('Failed to save language preference');
+  }
+}
+
+export function getLanguage(): string {
+  const config = loadConfig();
+  return config.language || 'es';
+}
+
