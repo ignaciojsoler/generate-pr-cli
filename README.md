@@ -1,367 +1,112 @@
-# 🚀 Generate PR CLI
+# Generate PR CLI
 
-A powerful CLI tool that automatically generates Pull Request descriptions based on Git diffs using AI. Built with Node.js, TypeScript, and Google Gemini.
+![Demo](assets/generate-pr-demo.gif)
 
-## ✨ Features
+> Generate professional Pull Request descriptions automatically using Git diffs and AI. Built with TypeScript and powered by Google Gemini.
 
-- 🔍 **Automatic Git diff detection** - Analyzes changes between branches
-- 🌍 **Multilingual Support** - Full English and Spanish (Español) interface
-- 🎨 **Multiple PR Templates** - Frontend, Backend, Custom templates + User templates
-- ✨ **Custom Templates** - Create and save your own PR templates
-- 🤖 **AI-powered descriptions** - Uses Google Gemini to generate professional PR descriptions
-- ✏️ **Interactive adjustments** - Iteratively refine the PR with AI assistance
-- 📋 **Copy to clipboard** - One-click copy to clipboard
-- 💾 **Save to file** - Export PR description as text file
-- 🔧 **Template Management** - Add, edit, and manage custom templates
-- 🎫 **Jira/VSTS Integration** - Optional ticket number inclusion in PR descriptions
-- 💾 **Persistent Storage** - Save API key and language preferences locally
-- 🎯 **Clean & modular** - Well-structured, maintainable codebase
+## Features
 
-## 📦 Installation
+- **Automatic Git diff detection** - Analyzes changes between branches
+- **Bilingual Support** - English & Spanish (Español) interface
+- **Smart Templates** - Frontend, Backend, Custom + User templates
+- **AI-powered** - Google Gemini generates professional PR descriptions
+- **Interactive refinement** - Iteratively adjust with AI
+- **Copy & save** - Clipboard integration + file export
+- **Ticket integration** - Optional Jira/VSTS ticket support
+- **Persistent config** - Save API key and preferences locally
 
-### Option 1: Local Development
+## Quick Start
+
+### Option 1: Use instantly with npx (Recommended)
 
 ```bash
-# Clone or navigate to the repository
-cd generate-pr-cli
+# Get your API key first: https://aistudio.google.com/app/apikey
+npx generate-pr-cli main --template frontend --ticket "[FE-123] New feature"
 
-# Install dependencies
-npm install
-
-# Set up your Google Gemini API key
-cp .env.example .env
-# Edit .env and add your Google Gemini API key
-
-# Build the project
-npm run build
+# The CLI will prompt you for API key on first run
+npx generate-pr-cli develop --template backend --ticket "[BE-456] Fix endpoint"
 ```
 
-### Option 2: Global Installation (after publishing)
+### Option 2: Install globally
 
 ```bash
+# Install once, use everywhere
 npm install -g generate-pr-cli
+
+# Then just run:
+generate-pr main --template frontend --ticket "[FE-123] New feature"
 ```
 
-## 🔑 Setup
+## Command Reference
 
-### Quick Setup (Recommended)
+| **Action** | **Command** | **Example** |
+|------------|-------------|-------------|
+| **Template** | `--template <type>`<br>`-t <type>` | `--template frontend` |
+| **Ticket** | `--ticket "<number>"` | `--ticket "[FE-123] Feature"` |
+| **Language** | `--language <lang>`<br>`-l <lang>` | `--language en` |
+| **Output** | `--output <type>`<br>`-o <type>` | `--output clipboard` |
+| **Filename** | `--filename <name>`<br>`-f <name>` | `--filename pr.txt` |
+| **API Key** | `--set-api-key` | Save Gemini API key |
+| **Help** | `--help`<br>`-h` | Show help |
 
-1. Get your Google Gemini API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
+#### Quick Reference:
+- **Templates**: `frontend`, `backend`, `custom`
+- **Languages**: `en`, `es`  
+- **Output**: `clipboard`, `file`, `console`
 
-2. Set your API key:
+## First-Time Setup
+
+1. **Get API key**: [Google AI Studio](https://aistudio.google.com/app/apikey)
+
+2. **Run any command** - CLI guides you:
 ```bash
-generate-pr --set-api-key
-# Enter your API key when prompted
+npx generate-pr-cli main --template frontend
+# Will prompt: "Enter your Gemini API key:"
+# Enter your API key → Done! Saved for future use
 ```
 
-### Alternative Setup Methods
-
-**Option 1: Commands**
-```bash
-generate-pr --set-api-key           # Set API key securely
-generate-pr --clear-api-key         # Remove saved API key
-node dist/index.js --set-api-key    # For local development
-```
-
-**Option 2: Environment Variable**
-Create a `.env` file in the project root:
-```bash
-GEMINI_API_KEY=your_gemini_api_key_here
-```
-
-**Option 3: First Run**
-If no API key is saved, the CLI will prompt you for it on first use.
-
-## 🌍 Language Settings / Configuración de Idioma
-
-The CLI supports both **English** and **Spanish** (Español). You can change the language at any time:
-
-### Supported Languages / Idiomas Soportados
-
-| Language | Code | Description |
-|----------|------|-------------|
-| 🇺🇸 English | `en` | Full English interface and templates |
-| 🇪🇸 Español | `es` | Interfaz y plantillas en español |
-
-### Change Language / Cambiar Idioma
+### Quick Commands
 
 ```bash
-# Interactive language selection
-generate-pr --language
-generate-pr --lang        # Short alias
+# One-liner commands with npx
+npx generate-pr-cli main --template frontend                    # Frontend PR
+npx generate-pr-cli develop --template backend --ticket BE-123  # Backend PR with ticket
+npx generate-pr-cli main --language en --output clipboard       # English + clipboard
 
-# For local development
-node dist/index.js --language
-node dist/index.js --lang
+# Shortened flags for speed
+npx generate-pr-cli main -t frontend              # Template selection
+npx generate-pr-cli develop --ticket FE-456     # Ticket specification
+npx generate-pr-cli main -l en -o clipboard     # Language + output
+
+# Or if installed globally:
+generate-pr main --template frontend              # Same commands, installed version
 ```
 
-### Language Features / Características por Idioma
-
-- **✅ Interface**: All menu options, prompts, and messages
-- **✅ Templates**: Frontend, Backend, and Custom templates
-- **✅ Help**: Complete documentation in selected language
-- **✅ Error Messages**: Localized error reporting
-- **✅ Validation**: API key and template validation messages
-
-The language setting is saved automatically and persists across sessions.
-
-## 🚀 Usage
-
-### ⚡ Quick Commands / Comandos Rápidos
-
-```bash
-# One-liner commands for maximum efficiency
-generate-pr main --template frontend                    # Frontend PR
-generate-pr develop --template backend --ticket BE-123  # Backend PR with ticket
-generate-pr main --language en --output clipboard       # English + clipboard
-generate-pr develop --template custom -o file -f pr.txt # Custom template + file
-
-# Shortened flags
-generate-pr main -t frontend              # Template selection
-generate-pr develop --ticket FE-456     # Ticket specification
-generate-pr main -l en -o clipboard     # Language + output
-```
-
-### Basic Usage
-
-```bash
-# Using npm script (development)
-npm run dev -- <target-branch>
-
-# Or after building
-node dist/index.js <target-branch>
-
-# Examples
-npm run dev -- develop
-npm run dev -- main
-npm run dev -- staging
-
-# Get help
-node dist/index.js --help
-node dist/index.js -h
-
-# API key management
-node dist/index.js --set-api-key    # Set or update your Gemini API key
-node dist/index.js --clear-api-key  # Remove saved API key
-
-# Language settings
-node dist/index.js --language       # Change language / Cambiar idioma
-node dist/index.js --lang          # Short alias for language command
-```
-
-### 📋 Detailed Options / Opciones Detalladas
-
-```bash
-# Templates
---template frontend      # Frontend template (UI/UX changes)
---template backend       # Backend template (API/Database changes)
---template custom        # Custom template (general purpose)
-
-# Ticket integration
---ticket "FE-123 My feature"    # Jira/VSTS ticket with description
---ticket "BE-456 Fix endpoint"  # Backend ticket
-
-# Language settings
---language en            # Set to English
---language es            # Set to Spanish
-
-# Output options
---output clipboard       # Copy to clipboard automatically
---output file           # Save to file automatically
---output console        # Display only (default)
-
-# File options
---filename pr.txt       # Specify filename for file output
-```
-
-### 💡 Real-World Examples / Ejemplos Reales
-
-```bash
-# Frontend development workflow
-generate-pr main --template frontend --ticket "FE-456 Add user authentication" --output clipboard
-
-# Backend API development
-generate-pr develop --template backend --ticket "BE-789 New payment endpoint" -o file -f payment-pr.txt
-
-# Multi-language workflow
-generate-pr main --template frontend --language en --ticket "FE-123 Responsive design"
-generate-pr main --template frontend --language es --ticket "FE-123 Diseño responsive"
-
-# Development to production
-generate-pr production --template backend --ticket "BE-007 Database optimization"
-
-# Use with shortened flags for speed
-generate-pr main -t custom -l en -o clipboard
-generate-pr develop -t backend --ticket "BE-999 Bug fix"
-
-# Save for documentation
-generate-pr main --template frontend -o file -f documentation/pr-v1.0.txt
-```
-
-### Global Usage (if installed globally)
-
-```bash
-generate-pr <target-branch>
-
-# Examples
-generate-pr develop
-generate-pr main
-
-# Get help
-generate-pr --help
-generate-pr -h
-generate-pr  # Shows help when no arguments provided
-
-# API key management
-generate-pr --set-api-key    # Set or update your Gemini API key
-generate-pr --clear-api-key  # Remove saved API key
-
-# Language settings
-generate-pr --language       # Change language / Cambiar idioma
-generate-pr --lang          # Short alias for language command
-```
-
-## 📖 How It Works
-
-1. **Detect Current Branch** - Automatically detects your current Git branch
-2. **Generate Diff** - Creates a diff between your branch and the target branch
-3. **Select Template** - Choose from Frontend, Backend, or Custom templates
-4. **AI Generation** - AI analyzes the diff and generates a professional PR description
-5. **Interactive Menu** - Refine, copy, save, or finish
-
-### Interactive Menu Options
-
-- **📋 Copy to clipboard** - Instantly copy the PR description
-- **💾 Save to file** - Save as a text file (default: `pr-description.txt`)
-- **✏️ Request AI adjustments** - Ask AI to modify the description (e.g., "make it shorter", "add more technical details")
-- **✅ Finish** - Exit the application
-
-## 🏗️ Project Structure
-
-```
-generate-pr-cli/
-├── src/
-│   ├── index.ts       # CLI entry point & main flow
-│   ├── git.ts         # Git operations (branch, diff)
-│   ├── templates.ts   # PR template definitions
-│   ├── ai.ts          # Google Gemini integration
-│   └── types.ts       # TypeScript interfaces
-├── .env.example       # Environment variables template
-├── .gitignore         # Git ignore rules
-├── package.json       # Dependencies & scripts
-├── tsconfig.json      # TypeScript configuration
-└── README.md          # This file
-```
-
-## 🛠️ Development
-
-```bash
-# Install dependencies
-npm install
-
-# Run in development mode
-npm run dev -- develop
-
-# Build for production
-npm run build
-
-# Run built version
-npm start develop
-```
-
-## 📝 Templates
-
-### Default Templates
-
-#### 🎨 Frontend Template
-Spanish template optimized for UI/UX changes:
-```
-Ticket: [Nombre del ticket y enlace]
-Qué se hizo: [Descripción de lo que realizaste]
-Datos necesarios para probar: [Datos requeridos]
-Cómo probar: [Pasos detallados para probar]
-Qué falta: [Tareas pendientes]
-Capturas: [Capturas de pantalla]
-```
-
-#### ⚙️ Backend Template  
-Spanish template for API/database changes:
-```
-Ticket: [Nombre del ticket y enlace]
-Qué se hizo: [Descripción de cambios realizados]
-Migraciones: [Cambios en base de datos]
-```
-
-#### 📦 Custom Template
-General-purpose English template for any type of change.
-
-### ✨ Custom Templates
-- Create and save your own templates
-- Templates are stored locally in `templates.json`
-- Use variables and placeholders in your templates
-- Manage multiple personalized templates
-
-## 🔧 Configuration
-
-### Environment Variables
-
-- `GEMINI_API_KEY` - Your Google Gemini API key (required)
-
-### AI Model
-
-The application uses `gemini-2.0-flash` for fast, high-quality results at a lower cost than other models.
-
-## 📋 Requirements
-
-- Node.js 18+ (for ES Modules support)
-- Git repository
-- Google Gemini API key
-- npm or yarn
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these guidelines:
-
-1. Follow the existing code style and clean code principles
-2. Keep functions small and focused
-3. Write descriptive commit messages
-4. Test your changes thoroughly
-
-## 📄 License
-
-ISC
-
-## 🙏 Acknowledgments
-
-Built with:
-- [Google Gemini](https://ai.google.dev/) - AI-powered PR generation
-- [Inquirer](https://github.com/SBoudrias/Inquirer.js) - Interactive CLI prompts
-- [Chalk](https://github.com/chalk/chalk) - Terminal styling
-- [Clipboardy](https://github.com/sindresorhus/clipboardy) - Clipboard operations
-
-## 💡 Tips
-
-- Ensure you're in a Git repository before running
-- Make sure your changes are committed or staged for accurate diffs
-- Use descriptive adjustment requests for better AI refinements
-- Keep your Gemini API key secure and never commit it to version control
-- Custom templates are saved locally - you can backup your `templates.json` file
-
-## 🐛 Troubleshooting
-
-### "Failed to get current Git branch"
-- Ensure you're in a Git repository
-- Check that Git is installed: `git --version`
-
-### "Gemini API key not provided"
-- Verify your `.env` file exists and contains `GEMINI_API_KEY`
-- Check that the API key is valid
-
-### "Target branch does not exist"
-- Verify the target branch name is correct
-- Run `git branch -a` to see all available branches
+## How It Works
+
+1. **Detect Branch** → Automatically finds your current Git branch
+2. **Generate Diff** → Creates diff between your branch and target branch  
+3. **Select Template** → Choose Frontend, Backend, or Custom template
+4. **AI Generation** → Gemini analyzes diff and generates professional PR description
+5. **Interactive Menu** → Refine, copy, save, or finish
 
 ---
 
-Made with ❤️ for lazy developers
+## Requirements
 
+- **Node.js** 20+ 
+- **Git** repository
+- **Google Gemini** API key ([free](https://aistudio.google.com/app/apikey))
+
+---
+
+## Ready to Get Started?
+
+```bash
+npx generate-pr-cli main --template frontend --ticket "[FE-123] Your feature"
+```
+
+---
+**[Report Issues →](https://github.com/ignaciojsoler/generate-pr-cli/issues)** | **[View on npm →](https://www.npmjs.com/package/generate-pr-cli)**
+
+Made with love for developers who love automation
