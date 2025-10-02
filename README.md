@@ -107,6 +107,21 @@ The language setting is saved automatically and persists across sessions.
 
 ## 🚀 Usage
 
+### ⚡ Quick Commands / Comandos Rápidos
+
+```bash
+# One-liner commands for maximum efficiency
+generate-pr main --template frontend                    # Frontend PR
+generate-pr develop --template backend --ticket BE-123  # Backend PR with ticket
+generate-pr main --language en --output clipboard       # English + clipboard
+generate-pr develop --template custom -o file -f pr.txt # Custom template + file
+
+# Shortened flags
+generate-pr main -t frontend              # Template selection
+generate-pr develop --ticket FE-456     # Ticket specification
+generate-pr main -l en -o clipboard     # Language + output
+```
+
 ### Basic Usage
 
 ```bash
@@ -132,6 +147,55 @@ node dist/index.js --clear-api-key  # Remove saved API key
 # Language settings
 node dist/index.js --language       # Change language / Cambiar idioma
 node dist/index.js --lang          # Short alias for language command
+```
+
+### 📋 Detailed Options / Opciones Detalladas
+
+```bash
+# Templates
+--template frontend      # Frontend template (UI/UX changes)
+--template backend       # Backend template (API/Database changes)
+--template custom        # Custom template (general purpose)
+
+# Ticket integration
+--ticket "FE-123 My feature"    # Jira/VSTS ticket with description
+--ticket "BE-456 Fix endpoint"  # Backend ticket
+
+# Language settings
+--language en            # Set to English
+--language es            # Set to Spanish
+
+# Output options
+--output clipboard       # Copy to clipboard automatically
+--output file           # Save to file automatically
+--output console        # Display only (default)
+
+# File options
+--filename pr.txt       # Specify filename for file output
+```
+
+### 💡 Real-World Examples / Ejemplos Reales
+
+```bash
+# Frontend development workflow
+generate-pr main --template frontend --ticket "FE-456 Add user authentication" --output clipboard
+
+# Backend API development
+generate-pr develop --template backend --ticket "BE-789 New payment endpoint" -o file -f payment-pr.txt
+
+# Multi-language workflow
+generate-pr main --template frontend --language en --ticket "FE-123 Responsive design"
+generate-pr main --template frontend --language es --ticket "FE-123 Diseño responsive"
+
+# Development to production
+generate-pr production --template backend --ticket "BE-007 Database optimization"
+
+# Use with shortened flags for speed
+generate-pr main -t custom -l en -o clipboard
+generate-pr develop -t backend --ticket "BE-999 Bug fix"
+
+# Save for documentation
+generate-pr main --template frontend -o file -f documentation/pr-v1.0.txt
 ```
 
 ### Global Usage (if installed globally)
