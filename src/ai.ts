@@ -13,6 +13,11 @@ export async function initializeAI(apiKey?: string): Promise<void> {
     throw new Error('Gemini API key not provided. Set GEMINI_API_KEY environment variable or pass it as an argument.');
   }
 
+  // Basic validation for API key format
+  if (!key.startsWith('AIza') || key.length < 30) {
+    throw new Error('Invalid API key format. Gemini API keys should start with "AIza" and be at least 30 characters long.');
+  }
+
   // Initialize Gemini client
   try {
     const { GoogleGenerativeAI } = await import('@google/generative-ai');

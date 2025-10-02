@@ -43,13 +43,33 @@ npm install -g generate-pr-cli
 
 ## 🔑 Setup
 
+### Quick Setup (Recommended)
+
 1. Get your Google Gemini API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
 
-2. Create a `.env` file in the project root:
+2. Set your API key:
+```bash
+generate-pr --set-api-key
+# Enter your API key when prompted
+```
 
+### Alternative Setup Methods
+
+**Option 1: Commands**
+```bash
+generate-pr --set-api-key           # Set API key securely
+generate-pr --clear-api-key         # Remove saved API key
+node dist/index.js --set-api-key    # For local development
+```
+
+**Option 2: Environment Variable**
+Create a `.env` file in the project root:
 ```bash
 GEMINI_API_KEY=your_gemini_api_key_here
 ```
+
+**Option 3: First Run**
+If no API key is saved, the CLI will prompt you for it on first use.
 
 ## 🚀 Usage
 
@@ -70,6 +90,10 @@ npm run dev -- staging
 # Get help
 node dist/index.js --help
 node dist/index.js -h
+
+# API key management
+node dist/index.js --set-api-key    # Set or update your Gemini API key
+node dist/index.js --clear-api-key  # Remove saved API key
 ```
 
 ### Global Usage (if installed globally)
@@ -85,6 +109,10 @@ generate-pr main
 generate-pr --help
 generate-pr -h
 generate-pr  # Shows help when no arguments provided
+
+# API key management
+generate-pr --set-api-key    # Set or update your Gemini API key
+generate-pr --clear-api-key  # Remove saved API key
 ```
 
 ## 📖 How It Works

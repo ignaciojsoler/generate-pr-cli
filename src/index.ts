@@ -8,9 +8,56 @@ import { config } from 'dotenv';
 import { getCurrentBranch, getGitDiff } from './git.js';
 import { getAllTemplateTypes, getTemplate, addUserTemplate } from './templates.js';
 import { initializeAI, generatePRDescription, adjustPRDescription } from './ai.js';
-import { loadApiKey, saveApiKey } from './config.js';
+import { loadApiKey, saveApiKey, clearApiKey } from './config.js';
 
 config();
+
+async function setApiKey() {
+  console.clear();
+  console.log(chalk.bold.cyan('\n🔑 Set Gemini API Key\n'));
+  
+  console.log(chalk.yellow('📍 Get your API key from: https://aistudio.google.com/app/apikey\n'));
+  
+  const apiKey = await input({
+    message: 'Enter your Gemini API key:'
+  });
+  
+  try {
+    // Validate the API key by initializing AI
+    await initializeAI(apiKey);
+    saveApiKey(apiKey);
+    console.log(chalk.green('\n✅ API key saved successfully!\n'));
+  } catch (error) {
+    console.log(chalk.red('\n❌ Invalid API key:'), error instanceof Error ? error.message : 'Unknown error');
+    console.log(chalk.yellow('\n💡 Make sure you have a valid Gemini API key from https://aistudio.google.com/app/apikey\n'));
+    process.exit(1);
+  }
+}
+
+async function clearApiKeyCmd() {
+  console.clear();
+  console.log(chalk.bold.cyan('\n🗑️  Clear Gemini API Key\n'));
+  
+  const currentKey = loadApiKey();
+  
+  if (!currentKey) {
+    console.log(chalk.yellow('ℹ️  No API key found to clear.\n'));
+    process.exit(0);
+  }
+  
+  const confirmed = await input({
+    message: 'Are you sure you want to clear your saved API key? (y/N):',
+    default: 'N'
+  });
+  
+  if (confirmed.toLowerCase() === 'y' || confirmed.toLowerCase() === 'yes') {
+    clearApiKey();
+    console.log(chalk.green('\n✅ API key cleared successfully!\n'));
+    console.log(chalk.gray('You can set a new API key with: generate-pr --set-api-key\n'));
+  } else {
+    console.log(chalk.gray('\nOperation cancelled.\n'));
+  }
+}
 
 function showHelp() {
   console.clear();
@@ -24,6 +71,10 @@ function showHelp() {
   console.log(chalk.green('   npx generate-pr <target-branch>'));
   console.log(chalk.gray('   generate-pr <target-branch>  # if installed globally'));
   console.log(chalk.gray('   node dist/index.js <target-branch>  # run locally\n'));
+
+  console.log(chalk.bold('⚙️  API Key Management:'));
+  console.log(chalk.magenta('   generate-pr --set-api-key     # Set or update API key'));
+  console.log(chalk.magenta('   generate-pr --clear-api-key   # Remove saved API key\n'));
 
   console.log(chalk.bold('📋 Examples:'));
   console.log(chalk.yellow('   npx generate-pr develop'));
@@ -48,8 +99,8 @@ function showHelp() {
 
   console.log(chalk.bold('🔑 Setup:'));
   console.log(chalk.cyan('   1. Get Gemini API key: https://aistudio.google.com/app/apikey'));
-  console.log(chalk.cyan('   2. The CLI will ask for your API key on first run'));
-  console.log(chalk.cyan('   3. API key is saved locally for future use\n'));
+  console.log(chalk.cyan('   2. Set your API key: generate-pr --set-api-key'));
+  console.log(chalk.cyan('   3. Your API key is saved securely for future use\n'));
 
   console.log(chalk.bold('💡 Tips:'));
   console.log(chalk.green('   • Ensure you\'re in a Git repository'));
@@ -73,9 +124,25 @@ async function main() {
   console.log(chalk.bold.cyan('\n🚀 PR Description Generator\n'));
 
   try {
-    // Check for --help command
+    // Check for special commands
     const args = process.argv.slice(2);
-    if (args.includes('--help') || args.includes('-h') || args.length === 0) {
+    
+    if (args.includes('--help') || args.includes('-h')) {
+      showHelp();
+    }
+    
+    if (args.includes('--set-api-key')) {
+      await setApiKey();
+      return;
+    }
+    
+    if (args.includes('--clear-api-key')) {
+      await clearApiKeyCmd();
+      return;
+    }
+    
+    // Check if no arguments provided
+    if (args.length === 0) {
       showHelp();
     }
 
