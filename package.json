@@ -10,11 +10,28 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node --esm src/index.ts",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"No tests specified\" && exit 0"
   },
-  "keywords": ["cli", "git", "pull-request", "ai", "automation"],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["cli", "git", "pull-request", "ai", "automation", "gemini", "typescript", "pr-generator", "vcs"],
+  "author": {
+    "name": "Ignacio J. Soler",
+    "email": "ignaciojsoler@gmail.com",
+    "url": "https://github.com/ignaciojsoler"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/ignaciojsoler/generate-pr-cli#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ignaciojsoler/generate-pr-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ignaciojsoler/generate-pr-cli/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "devDependencies": {
     "@types/inquirer": "^9.0.7",
     "@types/node": "^24.6.2",

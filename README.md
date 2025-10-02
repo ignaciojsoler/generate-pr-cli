@@ -28,9 +28,9 @@ cd generate-pr-cli
 # Install dependencies
 npm install
 
-# Set up your OpenAI API key
+# Set up your Google Gemini API key
 cp .env.example .env
-# Edit .env and add your OpenAI API key
+# Edit .env and add your Google Gemini API key
 
 # Build the project
 npm run build
@@ -244,7 +244,7 @@ generate-pr-cli/
 │   ├── index.ts       # CLI entry point & main flow
 │   ├── git.ts         # Git operations (branch, diff)
 │   ├── templates.ts   # PR template definitions
-│   ├── ai.ts          # OpenAI integration
+│   ├── ai.ts          # Google Gemini integration
 │   └── types.ts       # TypeScript interfaces
 ├── .env.example       # Environment variables template
 ├── .gitignore         # Git ignore rules
@@ -315,7 +315,7 @@ The application uses `gemini-2.0-flash` for fast, high-quality results at a lowe
 
 - Node.js 18+ (for ES Modules support)
 - Git repository
-- OpenAI API key
+- Google Gemini API key
 - npm or yarn
 
 ## 🤝 Contributing

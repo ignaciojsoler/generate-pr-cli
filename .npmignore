@@ -1,0 +1,48 @@
+# Source files
+src/
+*.ts
+tsconfig.json
+
+# Development files
+node_modules/
+.env
+.env.local
+.env.*.local
+
+# Build artifacts
+dist/test*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+test/
+tests/
+__tests__/
+*.test.js
+*.spec.js
+
+# Documentation (optional - include if you want docs distributed)
+# docs/
+
+# Git files
+.git/
+.gitignore
+
+# Templates file (user-generated)
+templates.json
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
