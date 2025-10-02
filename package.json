@@ -1,0 +1,31 @@
+{
+  "name": "generate-pr-cli",
+  "version": "1.0.0",
+  "description": "CLI tool to automatically generate Pull Request descriptions based on Git diffs",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "generate-pr": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node --esm src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "keywords": ["cli", "git", "pull-request", "ai", "automation"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^24.6.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.2.1",
+    "@google/generative-ai": "^0.24.0",
+    "chalk": "^5.4.1",
+    "clipboardy": "^4.0.0",
+    "dotenv": "^16.4.7"
+  }
+}
