@@ -12,18 +12,82 @@ import { loadApiKey, saveApiKey } from './config.js';
 
 config();
 
+function showHelp() {
+  console.clear();
+  console.log(chalk.bold.cyan('\n🚀 Generate PR CLI - Help\n'));
+  
+  console.log(chalk.bold('📖 Description:'));
+  console.log(chalk.gray('   Automatically generates Pull Request descriptions based on Git diffs using AI'));
+  console.log(chalk.gray('   Powered by Google Gemini for fast, accurate descriptions in Spanish\n'));
+
+  console.log(chalk.bold('🔧 Usage:'));
+  console.log(chalk.green('   npx generate-pr <target-branch>'));
+  console.log(chalk.gray('   generate-pr <target-branch>  # if installed globally'));
+  console.log(chalk.gray('   node dist/index.js <target-branch>  # run locally\n'));
+
+  console.log(chalk.bold('📋 Examples:'));
+  console.log(chalk.yellow('   npx generate-pr develop'));
+  console.log(chalk.yellow('   npx generate-pr main'));
+  console.log(chalk.yellow('   npx generate-pr staging\n'));
+
+  console.log(chalk.bold('🎨 Templates:'));
+  console.log(chalk.magenta('   🎨 Frontend - For UI/UX changes'));
+  console.log(chalk.gray('      Includes: Ticket, Qué se hizo, Datos para probar, Cómo probar, Qué falta, Capturas'));
+  console.log(chalk.magenta('   ⚙️  Backend - For API/Database changes'));
+  console.log(chalk.gray('      Includes: Ticket, Qué se hizo, Migraciones'));
+  console.log(chalk.magenta('   📦 Custom - General purpose'));
+  console.log(chalk.magenta('   ✨ User Templates - Create your own\n'));
+
+  console.log(chalk.bold('🎫 Features:'));
+  console.log(chalk.blue('   • Automatic Git diff detection'));
+  console.log(chalk.blue('   • Jira/VSTS ticket integration (optional)'));
+  console.log(chalk.blue('   • Persistent API key storage'));
+  console.log(chalk.blue('   • Interactive PR refinement'));
+  console.log(chalk.blue('   • Copy to clipboard & save to file'));
+  console.log(chalk.blue('   • Custom template creation\n'));
+
+  console.log(chalk.bold('🔑 Setup:'));
+  console.log(chalk.cyan('   1. Get Gemini API key: https://aistudio.google.com/app/apikey'));
+  console.log(chalk.cyan('   2. The CLI will ask for your API key on first run'));
+  console.log(chalk.cyan('   3. API key is saved locally for future use\n'));
+
+  console.log(chalk.bold('💡 Tips:'));
+  console.log(chalk.green('   • Ensure you\'re in a Git repository'));
+  console.log(chalk.green('   • Make sure your changes are committed for accurate diffs'));
+  console.log(chalk.green('   • Use descriptive ticket numbers (e.g., FE-123, BE-456)'));
+  console.log(chalk.green('   • You can request AI adjustments after initial generation\n'));
+
+  console.log(chalk.bold('🚨 Requirements:'));
+  console.log(chalk.red('   • Git repository'));
+  console.log(chalk.red('   • Gemini API key'));
+  console.log(chalk.red('   • Changes between current and target branch\n'));
+
+  console.log(chalk.bold('🔗 Links:'));
+  console.log(chalk.yellow('   • GitHub: [your-repo-url]'));
+  console.log(chalk.yellow('   • Report issues: [your-repo-url]/issues\n'));
+
+  console.log(chalk.gray('Made with ❤️ for developers who love automation'));
+  process.exit(0);
+}
+
 async function main() {
   console.clear();
   console.log(chalk.bold.cyan('\n🚀 PR Description Generator\n'));
 
   try {
-    // Get target branch from command line argument
-    const targetBranch = process.argv[2];
+    // Check for --help command
+    const args = process.argv.slice(2);
+    if (args.includes('--help') || args.includes('-h') || args.length === 0) {
+      showHelp();
+    }
+
+    const targetBranch = args[0];
     
     if (!targetBranch) {
       console.log(chalk.red('❌ Error: Target branch is required'));
       console.log(chalk.yellow('\nUsage: npx generate-pr <target-branch>'));
-      console.log(chalk.gray('Example: npx generate-pr develop\n'));
+      console.log(chalk.gray('Example: npx generate-pr develop'));
+      console.log(chalk.gray('Help: npx generate-pr --help\n'));
       process.exit(1);
     }
 

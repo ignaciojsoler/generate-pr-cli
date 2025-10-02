@@ -66,6 +66,10 @@ node dist/index.js <target-branch>
 npm run dev -- develop
 npm run dev -- main
 npm run dev -- staging
+
+# Get help
+node dist/index.js --help
+node dist/index.js -h
 ```
 
 ### Global Usage (if installed globally)
@@ -76,6 +80,11 @@ generate-pr <target-branch>
 # Examples
 generate-pr develop
 generate-pr main
+
+# Get help
+generate-pr --help
+generate-pr -h
+generate-pr  # Shows help when no arguments provided
 ```
 
 ## 📖 How It Works
