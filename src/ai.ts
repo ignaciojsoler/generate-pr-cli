@@ -39,21 +39,28 @@ export async function generatePRDescription(request: PRGenerationRequest): Promi
 
   const { diff, template, ticket } = request;
 
-  // Replace ticket placeholder in template
-  let processedTemplate = template.structure;
+  // Build final PR description structure
+  let prParts: string[] = [];
+  
+  // Handle ticket section - user input takes priority, no AI processing
   if (ticket) {
-    // Simple replacement
-    processedTemplate = processedTemplate.replace('{{TICKET_OR_SKIP}}', ticket);
-  } else {
-    // Remove the entire ticket line including the line break
-    processedTemplate = processedTemplate.replace(/^\*\*Ticket:\*\* \{\{TICKET_OR_SKIP\}\}\n?/m, '');
+    prParts.push(`**Ticket:** ${ticket}`);
   }
+
+  // Extract template sections that need AI processing (everything except ticket)
+  let templateForAI = template.structure;
+  
+  // Remove ticket line from template for AI processing
+  templateForAI = templateForAI.replace(/^\*\*Ticket:\*\* \{\{TICKET_OR_SKIP\}\}.*$/m, '');
+  
+  // Clean up any extra line breaks
+  templateForAI = templateForAI.trim();
   
   // Debug disabled for production
 
   const systemPrompt = `Genera un PR siguiendo EXACTAMENTE esta estructura:
 
-${processedTemplate}
+${templateForAI}
 
 INSTRUCCIONES:
 1. Copia los headers en negrita exactamente como están
@@ -80,7 +87,15 @@ Genera la descripción del PR usando EXACTAMENTE la estructura mostrada arriba:`
       throw new Error('No response generated from AI');
     }
 
-    return generatedText.trim();
+    // Combine user ticket with AI-generated content
+    const aiGeneratedContent = generatedText.trim();
+    
+    // If we have a ticket, prepend it to the AI content
+    if (prParts.length > 0) {
+      return `${prParts.join('\n')}\n\n${aiGeneratedContent}`;
+    }
+    
+    return aiGeneratedContent;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(`Failed to generate PR description: ${error.message}`);
