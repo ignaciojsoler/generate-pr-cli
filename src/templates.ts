@@ -7,33 +7,19 @@ const TEMPLATES_FILE = './templates.json';
 const defaultTemplates: Record<TemplateType, PRTemplate> = {
   frontend: {
     name: 'Frontend',
-    structure: `You are a technical writer creating a Pull Request description for a frontend change.
-
-Analyze the Git diff provided and generate a **concise, professional PR description** following this exact structure in Spanish:
-
-**Ticket:** {{TICKET_OR_SKIP}}
+    structure: `**Ticket:** {{TICKET_OR_SKIP}}
 **Qué se hizo:** [Descripción de lo que realizaste]
-**Datos necesarios para probar:** [Proporciona una lista de los datos necesarios para probar la funcionalidad, si aplica]
-**Cómo probar:** [Enumera todos los pasos necesarios para probar la funcionalidad. Sé lo más descriptivo posible]
-**Qué falta:** [Deja una lista de las cosas pendientes por hacer en el PR, si aplica]
-**Capturas:** [Capturas de pantalla]
-
-Use {{TICKET_OR_SKIP}} placeholder: if ticket is provided, show "Ticket: [ticket]", if not provided, skip this line entirely.
-`
+**Datos necesarios para probar:**
+**Cómo probar:**
+**Qué falta:**
+**Capturas:**`
   },
 
   backend: {
     name: 'Backend',
-    structure: `You are a technical writer creating a Pull Request description for a backend change.
-
-Analyze the Git diff provided and generate a **concise, professional PR description** following this exact structure in Spanish:
-
-**Ticket:** {{TICKET_OR_SKIP}}
-**Qué se hizo:** [Descripción de los cambios realizados (nuevas funciones, refactorización, migraciones, etc.)]
-**Migraciones:** [¿Se agregaron o modificaron migraciones? Explica qué cambios se hicieron en la base de datos]
-
-Use {{TICKET_OR_SKIP}} placeholder: if ticket is provided, show "Ticket: [ticket]", if not provided, skip this line entirely.
-`
+    structure: `**Ticket:** {{TICKET_OR_SKIP}}
+**Qué se hizo:** [Descripción de los cambios realizados]
+**Migraciones:** [¿Se modificaron migraciones?]`
   },
 
   custom: {
